@@ -115,6 +115,7 @@ var (
 	OpsCount        *prometheus.CounterVec
 	OpsFailedCount  *prometheus.CounterVec
 	OpsSuccessCount *prometheus.CounterVec
+	OpsErrorCount   *prometheus.CounterVec
 	RequestLatency  *prometheus.HistogramVec
 )
 
@@ -278,7 +279,13 @@ func Record(
 		Gauge.WithLabelValues(gaugeLabels...).Set(1)
 
 		CanaryCheckInfo.WithLabelValues(checkMetricLabels...).Set(1)
-		OpsFailedCount.WithLabelValues(checkMetricLabels...).Inc()
+
+		if result.InternalError {
+			OpsErrorCount.WithLabelValues(checkMetricLabels...).Inc()
+		} else {
+			fail.Append(1)
+			OpsFailedCount.WithLabelValues(checkMetricLabels...).Inc()
+		}
 	}
 
 	_uptime = types.Uptime{Passed: int(pass.Reduce(rolling.Sum)), Failed: int(fail.Reduce(rolling.Sum))}
