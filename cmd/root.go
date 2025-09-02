@@ -232,14 +232,14 @@ func ServerFlags(flags *pflag.FlagSet) {
 	)
 	flags.StringVar(
 		&checks.JunitContainerImageName,
-		"junit-container-image-name",
+		"junit-results-container-image-name",
 		"ubuntu:latest",
-		"Sets the container image name for the junit container sidecar",
+		"Sets the container image name for the junit results container sidecar",
 	)
 	flags.Var(
 		&checks.JunitContainerImagePullPolicy,
-		"junit-sidecar-container-image-pull-policy",
-		fmt.Sprintf("Sets the junit container sidecar pull policy. Allowed values: %v", checks.AllowedCorePullPolicyValues),
+		"junit-results-container-image-pull-policy",
+		fmt.Sprintf("Sets the junit results container sidecar pull policy. Allowed values: %v", checks.AllowedCorePullPolicyValues),
 	)
 
 	duty.BindPFlags(flags, duty.SkipMigrationByDefaultMode)

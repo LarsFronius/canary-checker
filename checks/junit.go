@@ -30,7 +30,7 @@ func init() {
 	//register metrics here
 }
 
-// type alias to implement flag.Value to allow setting in root.go
+// type alias to implement pflag.Value to allow setting in root.go
 type CorePullPolicy corev1.PullPolicy
 
 var _ pflag.Value = (*CorePullPolicy)(nil)
